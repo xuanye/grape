@@ -1,0 +1,7 @@
+<Project>
+	<PropertyGroup>
+		<GrapeCaptchaPackageNotes>
+        1. 图形验证码工具类实现
+        </GrapeCaptchaPackageNotes>      
+	</PropertyGroup>
+</Project>
