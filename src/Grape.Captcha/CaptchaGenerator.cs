@@ -125,10 +125,10 @@ namespace Grape.Captcha
 
                     var shiftPx = fontSize / 6;
 
-                    var x = i * fontSize * 1.0f;//+ rand.Next(-shiftPx, shiftPx) + rand.Next(-shiftPx, shiftPx);
+                    var x = i * fontSize * 1.0f + rand.Next(-shiftPx, shiftPx) + rand.Next(-shiftPx, shiftPx);
                     var maxY = height - fontSize;
                     if (maxY < 0) maxY = 0;
-                    float y = 0; //rand.Next(0, maxY);
+                    float y = 0;//rand.Next(0, maxY);
 
                     graph.DrawString(captchaCode[i].ToString(), font, fontBrush, x, y);
                 }
