@@ -12,6 +12,6 @@ mkdir -p $artifactsFolder
 
 dotnet build ./src/Grape.Captcha/Grape.Captcha.csproj -c Release
 
-dotnet pack ./src/Grape.Captcha/Grape.Captcha.csproj -c Release -o ../../$artifactsFolder
+dotnet pack ./src/Grape.Captcha/Grape.Captcha.csproj -c Release -o $artifactsFolder
 
-dotnet nuget push ./$artifactsFolder/Grape.Captcha.*.nupkg -k $NUGET_KEY -s https://www.nuget.org
+# dotnet nuget push ./$artifactsFolder/Grape.Captcha.*.nupkg -k $NUGET_KEY -s https://www.nuget.org

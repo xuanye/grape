@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Options;
+using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Drawing.Text;
@@ -12,10 +13,18 @@ namespace Grape.Captcha
     public class CaptchaGenerator : ICaptchaGenerator
     {
 
-        public CaptchaGenerator()
+        public CaptchaGenerator(IOptions<CaptchaGeneratorOptions> options = null)
         {
-            var fontStream = this.GetType().Assembly.GetManifestResourceStream("Grape.Captcha.font.font.ttf");
-            this._captchaFontFamily = LoadFontFamily(fontStream);
+            if (options != null && options.Value != null)
+            {
+                this._captchaFontFamily = options.Value.CaptchaFontFamily;
+            }
+            else
+            {
+                var fontStream = this.GetType().Assembly.GetManifestResourceStream("Grape.Captcha.font.font.ttf");
+                this._captchaFontFamily = LoadFontFamily(fontStream);
+            }
+          
         }
         const string Letters = "2346789ABCDEFGHJKLMNPRTUVWXYZ";
         //const string Letters = "0123456789";
@@ -38,9 +47,9 @@ namespace Grape.Captcha
 
 
                 //使用亮色填充
-                //graph.Clear(GetRandomLightColor(rand));
+                graph.Clear(GetRandomLightColor(rand));
                 //使用白色填充
-                graph.Clear(Color.White);
+                //graph.Clear(Color.White);
 
                 //绘制验证码
                 DrawCaptchaCode(graph, rand, captchaCode, width, height);
