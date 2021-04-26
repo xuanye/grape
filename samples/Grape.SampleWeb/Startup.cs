@@ -17,6 +17,7 @@ namespace Grape.SampleWeb
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<CaptchaGeneratorOptions>(x => x.OnlyNumber = false);
             // 添加验证码服务
             services.AddGrapeCaptchaService();
         }
@@ -45,9 +46,9 @@ namespace Grape.SampleWeb
                         length = intQL;
                     }
 
-                    var height = 30;
+                    var height = 40;
                     string captchaCode = await captchaGenerator.GenerateRandomCaptchaAsync(length);
-                    int width = Convert.ToInt32(Math.Round(height * 0.6 * captchaCode.Length, 0));
+                    int width = Convert.ToInt32(Math.Round(height * 0.65 * captchaCode.Length, 0));
                     var captchaResult = await captchaGenerator.GenerateCaptchaImageAsync(captchaCode, width, height);
 
                     context.Response.ContentType = "image/jpeg";

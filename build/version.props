@@ -1,5 +1,5 @@
 <Project>
 	<PropertyGroup>
-		<GrapeCaptchaPackageVersion>1.0.1</GrapeCaptchaPackageVersion>		
+		<GrapeCaptchaPackageVersion>1.0.2</GrapeCaptchaPackageVersion>		
 	</PropertyGroup>
 </Project>

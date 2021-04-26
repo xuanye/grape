@@ -12,5 +12,11 @@ namespace Grape.Captcha
         /// Captcha Font Family
         /// </summary>
         public FontFamily CaptchaFontFamily { get; set; }
+
+
+        /// <summary>
+        /// 只使用数字验证码
+        /// </summary>
+        public bool OnlyNumber { get; set; }
     }
 }

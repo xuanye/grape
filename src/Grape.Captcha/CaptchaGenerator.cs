@@ -12,33 +12,45 @@ namespace Grape.Captcha
 {
     public class CaptchaGenerator : ICaptchaGenerator
     {
-
-        public CaptchaGenerator(IOptions<CaptchaGeneratorOptions> options = null)
+        private readonly FontFamily _captchaFontFamily;
+        private readonly CaptchaGeneratorOptions _options;
+        private readonly string _letters;
+        public CaptchaGenerator(IOptions<CaptchaGeneratorOptions> optionsAccessor = null)
         {
-            if (options != null && options.Value != null)
+           
+            if (optionsAccessor != null && optionsAccessor.Value != null)
             {
-                this._captchaFontFamily = options.Value.CaptchaFontFamily;
+                _options = optionsAccessor.Value;
+            }
+            else
+            {
+                _options = new CaptchaGeneratorOptions();
+              
+            }
+
+            if(_options.CaptchaFontFamily != null)
+            {
+                this._captchaFontFamily = _options.CaptchaFontFamily;
             }
             else
             {
                 var fontStream = this.GetType().Assembly.GetManifestResourceStream("Grape.Captcha.font.font.ttf");
                 this._captchaFontFamily = LoadFontFamily(fontStream);
             }
-          
+
+
+            _letters = _options.OnlyNumber ? LETTERS_NUMS : LETTERS;
+
         }
-        const string Letters = "2346789ABCDEFGHJKLMNPRTUVWXYZ";
-        //const string Letters = "0123456789";
-
-        private FontFamily _captchaFontFamily;
-
-
+        private const string LETTERS = "2346789ABCDEFGHJKLMNPRTUVWXYZ";
+        private const string LETTERS_NUMS = "0123456789";
 
 
         public Task<CaptchaResult> GenerateCaptchaImageAsync(string captchaCode, int width = 0, int height = 30)
         {
             if (width <= 0)
             {
-                width = Convert.ToInt32(Math.Round(height * 0.8 * captchaCode.Length, 0));
+                width = Convert.ToInt32(Math.Round(height * 0.5 * captchaCode.Length, 0));
             }
             using (Bitmap baseMap = new Bitmap(width, height))
             using (Graphics graph = Graphics.FromImage(baseMap))
@@ -71,14 +83,14 @@ namespace Grape.Captcha
         public Task<string> GenerateRandomCaptchaAsync(int codeLength = 4)
         {
             Random rand = new Random();
-            int maxRand = Letters.Length - 1;
+            int maxRand = _letters.Length - 1;
 
             StringBuilder sb = new StringBuilder();
 
             for (int i = 0; i < codeLength; i++)
             {
                 int index = rand.Next(maxRand);
-                sb.Append(Letters[index]);
+                sb.Append(_letters[index]);
             }
 
             return Task.FromResult(sb.ToString());
@@ -122,19 +134,19 @@ namespace Grape.Captcha
         private void DrawCaptchaCode(Graphics graph, Random rand, string captchaCode, int width, int height)
         {
             var fontBrush = new SolidBrush(Color.Black);
-            var fontSize = GetFontSize(width, captchaCode.Length);
+            var fontSize = GetFontSize(width, captchaCode.Length)+8;
             //Console.WriteLine("🚀 ~ file: CaptchaGenerator.cs ~ line 117 ~ fontSize={0}", fontSize);
 
             var fontFamily = this._captchaFontFamily ?? FontFamily.GenericSerif;
-            using (var font = new Font(fontFamily, fontSize + 4, FontStyle.Bold, GraphicsUnit.Pixel))
+            using (var font = new Font(fontFamily, fontSize, FontStyle.Bold, GraphicsUnit.Pixel))
             {
                 for (var i = 0; i < captchaCode.Length; i++)
                 {
                     fontBrush.Color = GetRandomDeepColor(rand);
 
-                    var shiftPx = fontSize / 6;
+                    var shiftPx = fontSize /15;
 
-                    var x = i * fontSize * 1.0f + rand.Next(-shiftPx, shiftPx) + rand.Next(-shiftPx, shiftPx);
+                    var x = i * fontSize * 0.7f+ rand.Next(-shiftPx, shiftPx) + rand.Next(-shiftPx, shiftPx);
                     var maxY = height - fontSize;
                     if (maxY < 0) maxY = 0;
                     float y = 0;//rand.Next(0, maxY);
