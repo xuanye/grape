@@ -138,7 +138,7 @@ namespace Grape.Captcha
             //Console.WriteLine("🚀 ~ file: CaptchaGenerator.cs ~ line 117 ~ fontSize={0}", fontSize);
 
             var fontFamily = this._captchaFontFamily ?? FontFamily.GenericSerif;
-            using (var font = new Font(fontFamily, fontSize, FontStyle.Bold, GraphicsUnit.Pixel))
+            using (var font = new Font(fontFamily, fontSize, FontStyle.Regular, GraphicsUnit.Pixel))
             {
                 for (var i = 0; i < captchaCode.Length; i++)
                 {
@@ -146,7 +146,7 @@ namespace Grape.Captcha
 
                     var shiftPx = fontSize /15;
 
-                    var x = i * fontSize * 0.7f+ rand.Next(-shiftPx, shiftPx) + rand.Next(-shiftPx, shiftPx);
+                    var x = i * fontSize * 0.6f+ rand.Next(-shiftPx, shiftPx) + rand.Next(-shiftPx, shiftPx);
                     var maxY = height - fontSize;
                     if (maxY < 0) maxY = 0;
                     float y = 0;//rand.Next(0, maxY);
@@ -165,7 +165,7 @@ namespace Grape.Captcha
         /// <returns></returns>
         private static int GetFontSize(int imageWidth, int captchaCodeCount)
         {
-            var averageSize = imageWidth / captchaCodeCount;
+            var averageSize = imageWidth*1.2 / captchaCodeCount;
 
             return Convert.ToInt32(averageSize);
         }
