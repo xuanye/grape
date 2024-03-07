@@ -1,13 +1,9 @@
+using Grape.Captcha;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Grape.Captcha;
 
 namespace Grape.SampleWeb
 {
@@ -17,7 +13,6 @@ namespace Grape.SampleWeb
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<CaptchaGeneratorOptions>(x => x.OnlyNumber = true);
             // 添加验证码服务
             services.AddGrapeCaptchaService();
         }
@@ -38,21 +33,11 @@ namespace Grape.SampleWeb
                 {
                     var captchaGenerator = app.ApplicationServices.GetRequiredService<ICaptchaGenerator>();
 
-                    int length = 4;
-
-                    var qL = context.Request.Query["length"];
-                    if (int.TryParse(qL, out var intQL))
-                    {
-                        length = intQL;
-                    }
-
-                    var height = 35;
-                    string captchaCode = await captchaGenerator.GenerateRandomCaptchaAsync(length);
-                    int width = Convert.ToInt32(Math.Round(height * 0.5 * captchaCode.Length, 0));
-                    var captchaResult = await captchaGenerator.GenerateCaptchaImageAsync(captchaCode, width, height);
+                    var captchaCode = Guid.NewGuid().ToString("D");
+                    var captchaResult = await captchaGenerator.GenerateCaptchaAsync(captchaCode);
 
                     context.Response.ContentType = "image/jpeg";
-                    var buf = captchaResult.CaptchaMemoryStream.ToArray();
+                    var buf = captchaResult.Data;
                     await context.Response.Body.WriteAsync(buf, 0, buf.Length);
                     await context.Response.Body.FlushAsync();
                     //await context.Response.WriteAsync("Hello World!");

@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 namespace Grape.Captcha
 {
     /// <summary>
-    /// 基于SkiaSharp的验证码生成器
+    /// 基于SkiaSharp的验证码图片生成器
     /// </summary>
     public class DefaultCaptchaGenerator : ICaptchaGenerator
     {
-        private readonly CaptchaGeneratorOptions _generatorOptions;
+        private readonly CaptchaOptions _generatorOptions;
 
         private readonly List<IStep> _steps;
 
-        public DefaultCaptchaGenerator(CaptchaGeneratorOptions generatorOptions)
+        public DefaultCaptchaGenerator(CaptchaOptions generatorOptions)
         {
             _generatorOptions = generatorOptions;
             _steps = new List<IStep>()
@@ -26,7 +26,22 @@ namespace Grape.Captcha
             };
         }
 
-        public Task<byte[]> GenerateCaptchaAsync(string text)
+        public async Task<CaptchaResult> GenerateCaptchaAsync(string captchaCode)
+        {
+            var codeGenerator = CaptchaCodeGeneratorFactory.GetCaptchaCodeGenerator(_generatorOptions.CaptchaType);
+            var (renderText, value) = codeGenerator.GenerateCode(_generatorOptions.Length);
+
+            var data = await GenerateCaptchaImageAsync(renderText);
+
+            return new CaptchaResult()
+            {
+                CaptchaCode = captchaCode,
+                CaptchaValue = value,
+                Data = data
+            };
+        }
+
+        private Task<byte[]> GenerateCaptchaImageAsync(string text)
         {
             byte[] result = null;
             using (var bitmap = new SKBitmap(_generatorOptions.Width, _generatorOptions.Height, false))

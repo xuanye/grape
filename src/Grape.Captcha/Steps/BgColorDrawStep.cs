@@ -7,9 +7,9 @@ namespace Grape.Captcha.Steps
 {
     internal class BgColorDrawStep : IStep
     {
-        public void Draw(string text, SKCanvas canvas, CaptchaGeneratorOptions options)
+        public void Draw(string text, SKCanvas canvas, CaptchaOptions options)
         {
-            canvas.DrawColor(options.BgColor);
+            canvas.DrawColor(options.SKBgColor);
         }
     }
 }

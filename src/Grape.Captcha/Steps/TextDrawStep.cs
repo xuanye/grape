@@ -8,9 +8,9 @@ namespace Grape.Captcha.Steps
 {
     public class TextDrawStep : IStep
     {
-        public void Draw(string text, SKCanvas canvas, CaptchaGeneratorOptions options)
+        public void Draw(string text, SKCanvas canvas, CaptchaOptions options)
         {
-            var descs = GenerateTextGraphicDescriptions(options.Width, options.Height, text, options.Font, options.FontSize, options.ForeColors, options.TextBold);
+            var descs = GenerateTextGraphicDescriptions(options.Width, options.Height, text, options.SKFont, options.FontSize, options.SKForeColors, options.TextBold);
             descs.ForEach(x =>
             {
                 using (var paint = new SKPaint())
@@ -109,7 +109,7 @@ namespace Grape.Captcha.Steps
             public SKColor Color { get; set; }
             public PointF Location { get; set; }
             public float FontSize { get; set; }
-            public float BlendPercentage { get; set; } = 1;
+            public float BlendPercentage { get; set; } = 1f;
             public bool TextBold { get; set; }
         }
     }

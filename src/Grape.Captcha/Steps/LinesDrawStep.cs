@@ -6,14 +6,14 @@ namespace Grape.Captcha.Steps
 {
     internal class LinesDrawStep : IStep
     {
-        public void Draw(string text, SKCanvas canvas, CaptchaGeneratorOptions options)
+        public void Draw(string text, SKCanvas canvas, CaptchaOptions options)
         {
             if (options.InterferenceLine == null)
             {
                 return;
             }
 
-            var descs = GenerateLineGraphicDescriptions(options.Width, options.Height, options.ForeColors, options.InterferenceLine);
+            var descs = GenerateLineGraphicDescriptions(options.Width, options.Height, options.SKForeColors, options.InterferenceLine);
 
             descs.ForEach(x =>
             {
@@ -46,15 +46,14 @@ namespace Grape.Captcha.Steps
                 int ctrlx1 = random.Next(width / 4, width / 4 * 3), ctrly1 = random.Next(5, height - 5);
                 int ctrlx2 = random.Next(width / 4, width / 4 * 3), ctrly2 = random.Next(5, height - 5);
                 var colorIndex = random.Next(foreColors.Count);
-                var blendPecentage = random.Next(0, 101) / 100;
+
                 list.Add(new LineGraphicDescription
                 {
                     Color = foreColors[colorIndex],
                     Start = new SKPoint(x1, y1),
                     Ctrl1 = new SKPoint(ctrlx1, ctrly1),
                     Ctrl2 = new SKPoint(ctrlx2, ctrly2),
-                    End = new SKPoint(x2, y2),
-                    BlendPercentage = blendPecentage
+                    End = new SKPoint(x2, y2)
                 });
             }
             return list;
@@ -67,7 +66,7 @@ namespace Grape.Captcha.Steps
             public SKPoint Ctrl1 { get; set; }
             public SKPoint Ctrl2 { get; set; }
             public SKPoint End { get; set; }
-            public float BlendPercentage { get; set; } = 1;
+            public float BlendPercentage { get; set; } = 1f;
         }
     }
 }
