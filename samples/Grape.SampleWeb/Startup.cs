@@ -14,7 +14,13 @@ namespace Grape.SampleWeb
         public void ConfigureServices(IServiceCollection services)
         {
             // 添加验证码服务
-            services.AddGrapeCaptchaService();
+            services.AddGrapeCaptchaService(o =>
+            {
+                o.Animation = false;
+                o.CaptchaType = CaptchaCodeGeneratorType.ArithmeticWithChineseLetter;
+                o.FontFamily = "kaiti";
+                o.Length = 2;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

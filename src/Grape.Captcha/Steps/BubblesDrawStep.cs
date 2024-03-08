@@ -6,13 +6,13 @@ namespace Grape.Captcha.Steps
 {
     internal class BubblesDrawStep : IStep
     {
-        public void Draw(string text, SKCanvas canvas, CaptchaOptions options)
+        public void Draw(string text, SKCanvas canvas, CaptchaOptions options, int frameIndex)
         {
             if (options.InterferenceBubble == null)
             {
                 return;
             }
-            var descs = GenerateBubbleGraphicDescriptions(options.Width, options.Height, options.SKForeColors, options.InterferenceBubble);
+            var descs = GenerateBubbleGraphicDescriptions(options.Width, options.Height, options.SKForeColors, options.InterferenceBubble, options.Animation);
 
             descs.ForEach(x =>
             {
@@ -27,7 +27,7 @@ namespace Grape.Captcha.Steps
             });
         }
 
-        private List<BubbleGraphicDescription> GenerateBubbleGraphicDescriptions(int width, int height, List<SKColor> foreColors, InterferenceBubbleGeneratorOption bubbleOption)
+        private List<BubbleGraphicDescription> GenerateBubbleGraphicDescriptions(int width, int height, List<SKColor> foreColors, InterferenceBubbleGeneratorOption bubbleOption, bool animation)
         {
             var list = new List<BubbleGraphicDescription>();
             var random = new Random();
@@ -50,7 +50,8 @@ namespace Grape.Captcha.Steps
                     Cy = cy,
                     Radius = radius,
                     Thickness = bubbleOption.Thickness,
-                    Color = foreColors[colorIndex]
+                    Color = foreColors[colorIndex],
+                    BlendPercentage = animation ? random.Next(10) * 0.1f : 1f
                 });
             }
             return list;

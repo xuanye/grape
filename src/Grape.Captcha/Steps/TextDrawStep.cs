@@ -8,9 +8,9 @@ namespace Grape.Captcha.Steps
 {
     public class TextDrawStep : IStep
     {
-        public void Draw(string text, SKCanvas canvas, CaptchaOptions options)
+        public void Draw(string text, SKCanvas canvas, CaptchaOptions options, int frameIndex)
         {
-            var descs = GenerateTextGraphicDescriptions(options.Width, options.Height, text, options.SKFont, options.FontSize, options.SKForeColors, options.TextBold);
+            var descs = GenerateTextGraphicDescriptions(options.Width, options.Height, text, options.SKFont, options.FontSize, options.SKForeColors, options.TextBold, options.Animation, frameIndex);
             descs.ForEach(x =>
             {
                 using (var paint = new SKPaint())
@@ -26,7 +26,7 @@ namespace Grape.Captcha.Steps
             });
         }
 
-        private List<TextGraphicDescription> GenerateTextGraphicDescriptions(int width, int height, string text, SKTypeface font, float fontSize, List<SKColor> foreColors, bool isBold)
+        private List<TextGraphicDescription> GenerateTextGraphicDescriptions(int width, int height, string text, SKTypeface font, float fontSize, List<SKColor> foreColors, bool isBold, bool animation, int frameIndex)
         {
             var random = new Random();
             var list = new List<TextGraphicDescription>();
@@ -42,10 +42,25 @@ namespace Grape.Captcha.Steps
                     Color = foreColors[colorIndex],
                     Location = textPositions[i],
                     FontSize = fontSize,
-                    TextBold = isBold
-                });
+                    TextBold = isBold,
+                    BlendPercentage = animation ? GenerateBlendPercentage(frameIndex, i, text.Length) : 1f
+                }); ;
             }
             return list;
+        }
+
+        /// <summary>
+        /// 计算透明度
+        /// </summary>
+        /// <param name="frameIndex">帧索引</param>
+        /// <param name="len">验证码长度</param>
+        /// <returns>文字的透明度</returns>
+        private float GenerateBlendPercentage(int frameIndex, int charIndex, int len)
+        {
+            int num = frameIndex + charIndex;
+            float r = (float)1 / (len - 1);
+            float s = len * r;
+            return num >= len ? (num * r - s) : num * r;
         }
 
         /// <summary>

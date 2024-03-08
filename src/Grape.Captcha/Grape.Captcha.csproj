@@ -35,4 +35,9 @@
     <PackageReference Include="SkiaSharp" Version="2.88.7" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <Folder Include="AnimatedGif\" />
+  </ItemGroup>
+
 </Project>

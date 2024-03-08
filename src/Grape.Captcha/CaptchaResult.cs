@@ -6,6 +6,8 @@
 
         public string CaptchaValue { get; set; }
 
+        public bool Animation { get; set; }
+
         public byte[] Data { get; set; }
     }
 }

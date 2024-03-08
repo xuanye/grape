@@ -67,7 +67,7 @@ namespace Grape.Captcha
             {
                 if (_bgColor == SKColor.Empty)
                 {
-                    if (string.IsNullOrWhiteSpace(this.FontFamily))
+                    if (string.IsNullOrWhiteSpace(this.BgColor))
                     {
                         _bgColor = SKColors.White;
                     }
@@ -119,6 +119,13 @@ namespace Grape.Captcha
         /// 干扰线
         /// </summary>
         public InterferenceLineGeneratorOption InterferenceLine { get; set; } = new InterferenceLineGeneratorOption();
+
+        public bool Animation { get; set; }
+
+        /// <summary>
+        /// 每帧时长,Animation=true时有效
+        /// </summary>
+        public int FrameDuration { get; set; } = 300;
     }
 
     public class InterferenceLineGeneratorOption

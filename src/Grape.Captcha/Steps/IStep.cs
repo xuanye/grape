@@ -4,6 +4,6 @@ namespace Grape.Captcha.Steps
 {
     public interface IStep
     {
-        void Draw(string text, SKCanvas canvas, CaptchaOptions options);
+        void Draw(string text, SKCanvas canvas, CaptchaOptions options, int frameIndex);
     }
 }

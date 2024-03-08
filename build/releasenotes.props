@@ -4,6 +4,7 @@
         1. 绘图改为SkiaSharp.
         2. 支持多种验证码格式
         3. 新增几种字体	
+        4. 支持GIF动图
         </GrapeCaptchaPackageNotes>      
 	</PropertyGroup>
 </Project>

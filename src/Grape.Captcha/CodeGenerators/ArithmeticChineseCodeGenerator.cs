@@ -18,7 +18,7 @@ namespace Grape.Captcha.CodeGenerators
             _charMap.Add('?', '?');
             _charMap.Add('+', '加');
             _charMap.Add('-', '减');
-            _charMap.Add('*', '乘');
+            _charMap.Add('x', '乘');
         }
 
         public override (string text, string value) GenerateCode(int length)
